@@ -4,6 +4,8 @@
 
 Indicatori economici, curs valutar BNR, ROBOR, IRCC, bursa BET și principalii indici mondiali (DAX, FTSE, S&P 500, Nasdaq, Nikkei, Hang Seng, Sensex și altele) — toate live, într-un design clean cu toggle dark/light.
 
+🖱️ **Click pe orice card** pentru a vedea graficul istoric (1 zi / 1 săptămână / 1 lună / 1 an / 5 ani) cu tooltip interactiv.
+
 ![Preview](https://img.shields.io/badge/status-live-green) ![License](https://img.shields.io/badge/license-MIT-blue) ![No Build](https://img.shields.io/badge/build-zero--dependencies-orange)
 
 ---
