@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Dashboard financiar pentru România - indicatori economici, bursa BET, burse internaționale, ROBOR, curs valutar BNR">
+    <title>Panoramă Financiară RO — Indicatori Economici</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,600;9..144,800&family=JetBrains+Mono:wght@400;500;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="grain"></div>
+
+    <header class="site-header">
+        <div class="header-inner">
+            <div class="brand">
+                <div class="brand-mark">◈</div>
+                <div class="brand-text">
+                    <h1>Panoramă Financiară</h1>
+                    <p class="subtitle">Indicatori economici &middot; România &amp; piețe globale</p>
+                </div>
+            </div>
+            <div class="header-actions">
+                <div class="live-status">
+                    <span class="pulse"></span>
+                    <span id="lastUpdate">Se încarcă...</span>
+                </div>
+                <button id="themeToggle" class="theme-toggle" aria-label="Schimbă tema">
+                    <span class="theme-icon-sun">☀</span>
+                    <span class="theme-icon-moon">☾</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <!-- SECȚIUNEA 1: CURS VALUTAR BNR -->
+        <section class="section" id="section-fx">
+            <div class="section-header">
+                <span class="section-number">01</span>
+                <h2>Curs Valutar BNR</h2>
+                <span class="section-meta" id="bnrDate">—</span>
+            </div>
+            <div class="fx-grid" id="fxGrid">
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+                <div class="skeleton-card"></div>
+            </div>
+        </section>
+
+        <!-- SECȚIUNEA 2: DOBÂNZI ROMÂNIA -->
+        <section class="section" id="section-rates">
+            <div class="section-header">
+                <span class="section-number">02</span>
+                <h2>Dobânzi &amp; Indici Monetari RO</h2>
+                <span class="section-meta">BNR</span>
+            </div>
+            <div class="rates-grid" id="ratesGrid">
+                <div class="rate-card highlight">
+                    <div class="rate-label">Dobânda de politică monetară</div>
+                    <div class="rate-value" id="keyRate">—</div>
+                    <div class="rate-note">BNR &middot; rata de referință</div>
+                </div>
+                <div class="rate-card">
+                    <div class="rate-label">ROBOR 3M</div>
+                    <div class="rate-value" id="robor3m">—</div>
+                    <div class="rate-note">credite în lei</div>
+                </div>
+                <div class="rate-card">
+                    <div class="rate-label">ROBOR 6M</div>
+                    <div class="rate-value" id="robor6m">—</div>
+                    <div class="rate-note">credite în lei</div>
+                </div>
+                <div class="rate-card">
+                    <div class="rate-label">IRCC</div>
+                    <div class="rate-value" id="ircc">—</div>
+                    <div class="rate-note">credite consumatori</div>
+                </div>
+                <div class="rate-card">
+                    <div class="rate-label">Inflație anuală</div>
+                    <div class="rate-value" id="inflation">—</div>
+                    <div class="rate-note">INS &middot; IPC</div>
+                </div>
+                <div class="rate-card">
+                    <div class="rate-label">EURIBOR 3M</div>
+                    <div class="rate-value" id="euribor3m">—</div>
+                    <div class="rate-note">zona euro</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECȚIUNEA 3: BURSA ROMÂNIA -->
+        <section class="section" id="section-bvb">
+            <div class="section-header">
+                <span class="section-number">03</span>
+                <h2>Bursa de Valori București</h2>
+                <span class="section-meta">BVB</span>
+            </div>
+            <div class="index-grid" id="bvbGrid">
+                <div class="index-card featured" data-symbol="BET">
+                    <div class="index-header">
+                        <div>
+                            <div class="index-name">BET</div>
+                            <div class="index-desc">Indice principal &middot; top 20 companii</div>
+                        </div>
+                        <div class="index-flag">🇷🇴</div>
+                    </div>
+                    <div class="index-value" id="bet-value">—</div>
+                    <div class="index-change" id="bet-change">—</div>
+                </div>
+                <div class="index-card" data-symbol="BET-TR">
+                    <div class="index-header">
+                        <div>
+                            <div class="index-name">BET-TR</div>
+                            <div class="index-desc">cu dividende reinvestite</div>
+                        </div>
+                    </div>
+                    <div class="index-value" id="bettr-value">—</div>
+                    <div class="index-change" id="bettr-change">—</div>
+                </div>
+                <div class="index-card" data-symbol="BET-NG">
+                    <div class="index-header">
+                        <div>
+                            <div class="index-name">BET-NG</div>
+                            <div class="index-desc">energie &amp; utilități</div>
+                        </div>
+                    </div>
+                    <div class="index-value" id="betng-value">—</div>
+                    <div class="index-change" id="betng-change">—</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECȚIUNEA 4: BURSE EUROPENE -->
+        <section class="section" id="section-europe">
+            <div class="section-header">
+                <span class="section-number">04</span>
+                <h2>Piețe Europene</h2>
+                <span class="section-meta">principalii indici</span>
+            </div>
+            <div class="index-grid">
+                <div class="index-card" data-symbol="^GDAXI">
+                    <div class="index-header">
+                        <div>
+                            <div class="index-name">DAX</div>
+                            <div class="index-desc">Germania &middot; 40 blue chips</div>
+                        </div>
+                        <div class="index-flag">🇩🇪</div>
+                    </div>
+                    <div class="index-value" id="dax-value">—</div>
+                    <div class="index-change" id="dax-change">—</div>
+                </div>
+                <div class="index-card" data-symbol="^FTSE">
+                    <div class="index-header">
+                        <div>
+                            <div class="index-name">FTSE 100</div>
+                            <div class="index-desc">UK &middot; top 100 Londra</div>
+                        </div>
+                        <div class="index-flag">🇬🇧</div>
+                    </div>
+                    <div class="index-value" id="ftse-value">—</div>
+                    <div class="index-change" id="ftse-change">—</div>
+                </div>
+                <div class="index-card" data-symbol="^FCHI">
+                    <div class="index-header">
+                        <div>
+                            <div class="index-name">CAC 40</div>
+                            <div class="index-desc">Franța &middot; Paris</div>
+                        </div>
+                        <div class="index-flag">🇫🇷</div>
+                    </div>
+                    <div class="index-value" id="cac-value">—</div>
+                    <div class="index-change" id="cac-change">—</div>
+                </div>
+                <div class="index-card" data-symbol="^STOXX50E">
+                    <div class="index-header">
+                        <div>
+                            <div class="index-name">Euro Stoxx 50</div>
+                            <div class="index-desc">zona euro &middot; 50 mari companii</div>
+                        </div>
+                        <div class="index-flag">🇪🇺</div>
+                    </div>
+                    <div class="index-value" id="estoxx-value">—</div>
+                    <div class="index-change" id="estoxx-change">—</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECȚIUNEA 5: BURSE AMERICANE -->
+        <section class="section" id="section-us">
+            <div class="section-header">
+                <span class="section-number">05</span>
+                <h2>Piețe Americane</h2>
+                <span class="section-meta">Wall Street</span>
+            </div>
+            <div class="index-grid">
+                <div class="index-card" data-symbol="^GSPC">
+                    <div class="index-header">
+                        <div>
+                            <div class="index-name">S&amp;P 500</div>
+                            <div class="index-desc">500 mari companii SUA</div>
+                        </div>
+                        <div class="index-flag">🇺🇸</div>
+                    </div>
+                    <div class="index-value" id="sp500-value">—</div>
+                    <div class="index-change" id="sp500-change">—</div>
+                </div>
+                <div class="index-card" data-symbol="^IXIC">
+                    <div class="index-header">
+                        <div>
+                            <div class="index-name">Nasdaq</div>
+                            <div class="index-desc">tech &amp; growth &middot; Composite</div>
+                        </div>
+                        <div class="index-flag">🇺🇸</div>
+                    </div>
+                    <div class="index-value" id="nasdaq-value">—</div>
+                    <div class="index-change" id="nasdaq-change">—</div>
+                </div>
+                <div class="index-card" data-symbol="^DJI">
+                    <div class="index-header">
+                        <div>
+                            <div class="index-name">Dow Jones</div>
+                            <div class="index-desc">Industrial Average</div>
+                        </div>
+                        <div class="index-flag">🇺🇸</div>
+                    </div>
+                    <div class="index-value" id="dow-value">—</div>
+                    <div class="index-change" id="dow-change">—</div>
+                </div>
+                <div class="index-card" data-symbol="^RUT">
+                    <div class="index-header">
+                        <div>
+                            <div class="index-name">Russell 2000</div>
+                            <div class="index-desc">small-cap SUA</div>
+                        </div>
+                        <div class="index-flag">🇺🇸</div>
+                    </div>
+                    <div class="index-value" id="rut-value">—</div>
+                    <div class="index-change" id="rut-change">—</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECȚIUNEA 6: BURSE ASIATICE -->
+        <section class="section" id="section-asia">
+            <div class="section-header">
+                <span class="section-number">06</span>
+                <h2>Piețe Asiatice</h2>
+                <span class="section-meta">sesiuni de noapte RO</span>
+            </div>
+            <div class="index-grid">
+                <div class="index-card" data-symbol="^N225">
+                    <div class="index-header">
+                        <div>
+                            <div class="index-name">Nikkei 225</div>
+                            <div class="index-desc">Japonia &middot; Tokyo</div>
+                        </div>
+                        <div class="index-flag">🇯🇵</div>
+                    </div>
+                    <div class="index-value" id="nikkei-value">—</div>
+                    <div class="index-change" id="nikkei-change">—</div>
+                </div>
+                <div class="index-card" data-symbol="000001.SS">
+                    <div class="index-header">
+                        <div>
+                            <div class="index-name">SSE Composite</div>
+                            <div class="index-desc">China &middot; Shanghai</div>
+                        </div>
+                        <div class="index-flag">🇨🇳</div>
+                    </div>
+                    <div class="index-value" id="sse-value">—</div>
+                    <div class="index-change" id="sse-change">—</div>
+                </div>
+                <div class="index-card" data-symbol="^HSI">
+                    <div class="index-header">
+                        <div>
+                            <div class="index-name">Hang Seng</div>
+                            <div class="index-desc">Hong Kong</div>
+                        </div>
+                        <div class="index-flag">🇭🇰</div>
+                    </div>
+                    <div class="index-value" id="hsi-value">—</div>
+                    <div class="index-change" id="hsi-change">—</div>
+                </div>
+                <div class="index-card" data-symbol="^BSESN">
+                    <div class="index-header">
+                        <div>
+                            <div class="index-name">BSE Sensex</div>
+                            <div class="index-desc">India &middot; Bombay 30</div>
+                        </div>
+                        <div class="index-flag">🇮🇳</div>
+                    </div>
+                    <div class="index-value" id="sensex-value">—</div>
+                    <div class="index-change" id="sensex-change">—</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECȚIUNEA 7: MĂRFURI & CRIPTO -->
+        <section class="section" id="section-commodities">
+            <div class="section-header">
+                <span class="section-number">07</span>
+                <h2>Mărfuri &amp; Active Digitale</h2>
+                <span class="section-meta">safe haven &amp; crypto</span>
+            </div>
+            <div class="commodities-grid">
+                <div class="comm-card">
+                    <div class="comm-icon">◉</div>
+                    <div class="comm-info">
+                        <div class="comm-label">Aur</div>
+                        <div class="comm-sub">USD / uncie</div>
+                    </div>
+                    <div class="comm-value" id="gold-value">—</div>
+                    <div class="comm-change" id="gold-change">—</div>
+                </div>
+                <div class="comm-card">
+                    <div class="comm-icon">○</div>
+                    <div class="comm-info">
+                        <div class="comm-label">Argint</div>
+                        <div class="comm-sub">USD / uncie</div>
+                    </div>
+                    <div class="comm-value" id="silver-value">—</div>
+                    <div class="comm-change" id="silver-change">—</div>
+                </div>
+                <div class="comm-card">
+                    <div class="comm-icon">▲</div>
+                    <div class="comm-info">
+                        <div class="comm-label">Petrol Brent</div>
+                        <div class="comm-sub">USD / baril</div>
+                    </div>
+                    <div class="comm-value" id="oil-value">—</div>
+                    <div class="comm-change" id="oil-change">—</div>
+                </div>
+                <div class="comm-card">
+                    <div class="comm-icon">₿</div>
+                    <div class="comm-info">
+                        <div class="comm-label">Bitcoin</div>
+                        <div class="comm-sub">USD</div>
+                    </div>
+                    <div class="comm-value" id="btc-value">—</div>
+                    <div class="comm-change" id="btc-change">—</div>
+                </div>
+                <div class="comm-card">
+                    <div class="comm-icon">Ξ</div>
+                    <div class="comm-info">
+                        <div class="comm-label">Ethereum</div>
+                        <div class="comm-sub">USD</div>
+                    </div>
+                    <div class="comm-value" id="eth-value">—</div>
+                    <div class="comm-change" id="eth-change">—</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECȚIUNEA 8: LEGENDĂ & NOTE -->
+        <section class="section notes-section">
+            <div class="section-header">
+                <span class="section-number">08</span>
+                <h2>Notă de subsol</h2>
+            </div>
+            <div class="notes">
+                <p>
+                    Datele pentru cursul valutar provin direct din fluxul oficial XML al <strong>Băncii Naționale a României</strong>
+                    (bnr.ro/nbrfxrates.xml) și se actualizează în fiecare zi lucrătoare în jurul orei 13:00.
+                </p>
+                <p>
+                    Indicii bursieri și prețurile mărfurilor provin de la <strong>Yahoo Finance</strong> prin proxy CORS gratuit.
+                    Valorile pot avea un decalaj de 15-20 de minute față de prețurile live. Nu folosi această pagină pentru tranzacționare activă.
+                </p>
+                <p>
+                    ROBOR, IRCC, inflația și dobânda de politică monetară sunt valorile cele mai recente publicate oficial
+                    — acestea se actualizează cu o frecvență mai mică (zilnic / trimestrial / lunar).
+                </p>
+                <p class="disclaimer">
+                    <strong>Disclaimer:</strong> această pagină are scop pur informativ și educativ. Nu constituie consultanță financiară.
+                </p>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <p>Construit cu ❤ pentru cei curioși despre economie &middot; open-source pe <a href="#" id="repoLink">GitHub</a></p>
+            <p class="footer-meta">Date: BNR, Yahoo Finance, INS &middot; Ultimul refresh: <span id="footerUpdate">—</span></p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
