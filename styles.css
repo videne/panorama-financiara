@@ -1041,6 +1041,21 @@ body {
     opacity: 0.6;
 }
 
+.chart-reference-line {
+    stroke: var(--ink-muted);
+    stroke-width: 1;
+    stroke-dasharray: 4 4;
+    opacity: 0.5;
+}
+
+.chart-reference-label {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    fill: var(--ink-muted);
+    letter-spacing: 0.02em;
+    font-style: italic;
+}
+
 .chart-hover-dot {
     fill: currentColor;
     stroke: var(--bg-card);

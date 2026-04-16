@@ -391,7 +391,7 @@
         createModal();
         currentChartSymbol = symbol;
         currentChartUnit = unit;
-        currentRangeId = '1mo';
+        currentRangeId = '1d'; // default pe "1 Zi" ca să corespundă cu procentul de pe prima pagină
 
         modalEl.querySelector('#chart-title').textContent = title;
         modalEl.querySelector('#chart-subtitle').textContent = subtitle || '';
@@ -446,7 +446,22 @@
 
             const firstVal = points[0].v;
             const lastVal = points[points.length - 1].v;
-            const changePct = ((lastVal - firstVal) / firstVal) * 100;
+
+            /**
+             * Pentru "1 Zi" folosim previousClose (închiderea oficială de IERI)
+             * ca reper, la fel ca pe prima pagină.
+             * Pentru intervale mai lungi folosim primul punct al seriei.
+             *
+             * Acest fix asigură că procentul "1 Zi" din modal === procentul de pe prima pagină.
+             */
+            let baseVal;
+            if (currentRangeId === '1d') {
+                baseVal = result.meta?.previousClose ?? result.meta?.chartPreviousClose ?? firstVal;
+            } else {
+                baseVal = firstVal;
+            }
+
+            const changePct = ((lastVal - baseVal) / baseVal) * 100;
             const min = Math.min(...points.map(p => p.v));
             const max = Math.max(...points.map(p => p.v));
 
@@ -464,7 +479,7 @@
                 `· min: ${fmtNumber(min, 2)} · max: ${fmtNumber(max, 2)}`;
 
             loading.style.display = 'none';
-            drawChart(points, { changePct, min, max });
+            drawChart(points, { changePct, min, max, baseVal, rangeId: currentRangeId });
 
         } catch (err) {
             console.error('Eroare chart:', err);
@@ -472,7 +487,7 @@
         }
     }
 
-    function drawChart(points, { changePct, min, max }) {
+    function drawChart(points, { changePct, min, max, baseVal, rangeId }) {
         const svg = modalEl.querySelector('#chart-svg');
         const tooltip = modalEl.querySelector('#chart-tooltip');
 
@@ -482,10 +497,19 @@
         const innerH = H - PAD_T - PAD_B;
 
         const tMin = points[0].t, tMax = points[points.length - 1].t;
-        const vRange = max - min || 1;
+
+        // Pentru "1 Zi" includem baseVal (prev close) în domeniul vizual
+        // astfel încât linia de referință să fie mereu vizibilă
+        let effectiveMin = min, effectiveMax = max;
+        if (rangeId === '1d' && baseVal != null) {
+            effectiveMin = Math.min(min, baseVal);
+            effectiveMax = Math.max(max, baseVal);
+        }
+
+        const vRange = effectiveMax - effectiveMin || 1;
         const vPad = vRange * 0.08;
-        const vMin = min - vPad;
-        const vMax = max + vPad;
+        const vMin = effectiveMin - vPad;
+        const vMax = effectiveMax + vPad;
 
         const xOf = (t) => PAD_L + ((t - tMin) / (tMax - tMin || 1)) * innerW;
         const yOf = (v) => PAD_T + (1 - (v - vMin) / (vMax - vMin)) * innerH;
@@ -530,6 +554,16 @@
 
         const colorClass = changePct >= 0 ? 'up' : 'down';
 
+        // Linia de referință pentru "1 Zi": nivelul previousClose
+        let referenceLineSvg = '';
+        if (rangeId === '1d' && baseVal != null) {
+            const refY = yOf(baseVal);
+            referenceLineSvg = `
+                <line class="chart-reference-line" x1="${PAD_L}" y1="${refY.toFixed(2)}" x2="${W - PAD_R}" y2="${refY.toFixed(2)}"/>
+                <text class="chart-reference-label" x="${W - PAD_R - 4}" y="${(refY - 4).toFixed(2)}" text-anchor="end">închidere ieri: ${fmtNumber(baseVal, 2)}</text>
+            `;
+        }
+
         svg.innerHTML = `
             <defs>
                 <linearGradient id="area-grad" x1="0" y1="0" x2="0" y2="1">
@@ -539,6 +573,7 @@
             </defs>
             <g class="chart-${colorClass}">
                 ${gridLines}
+                ${referenceLineSvg}
                 <path class="chart-area" d="${areaPath}" fill="url(#area-grad)"/>
                 <path class="chart-line" d="${path}" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
                 ${yLabels}
